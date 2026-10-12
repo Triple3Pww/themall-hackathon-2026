@@ -1,0 +1,19 @@
+# Floors listed bottom -> top, in the order cars meet them on the one-way up ramp.
+floors:
+  - {id: P1, capacity: 180, cam_in: cam-p1-in, cam_out: cam-p1-out}
+  - {id: P2, capacity: 220, cam_in: cam-p2-in, cam_out: cam-p2-out}
+  - {id: P3, capacity: 220, cam_in: cam-p3-in, cam_out: cam-p3-out}
+  - {id: P4, capacity: 220, cam_in: cam-p4-in, cam_out: cam-p4-out}
+  - {id: P5, capacity: 160, cam_in: cam-p5-in, cam_out: cam-p5-out}
+
+thresholds:
+  # Decision: show UP only when this floor is nearly gone AND the floor above is clearly better.
+  low_threshold: 1          # effective spaces on this floor at or below which UP is considered
+  margin_up: 8              # floor above must have at least this many more effective spaces
+  # Hysteresis
+  hold_seconds: 20          # a new advice must persist this long before the sign switches
+  min_dwell_seconds: 60     # minimum time a GO/UP stays on the sign
+  # Data honesty
+  stale_after_s: 30         # reading older than this -> no advice
+  min_coverage: 0.90        # share of bay sensors that must be reporting
+  max_inconsistency: 5      # tolerated (parked - cars on floor) before calling the data contradictory
