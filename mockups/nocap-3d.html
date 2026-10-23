@@ -39,10 +39,101 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);ov
 #big .lbl{font-size:14px;font-weight:700;color:var(--mute)}
 #big .num{font-family:var(--f-num);font-weight:700;font-variant-numeric:tabular-nums;font-size:72px;line-height:1;color:var(--ink)}
 #big .num small{font-size:40px;color:var(--mute)}
+#bar .rush{border-color:rgba(255,181,71,.6);color:var(--circ)}
+#bar .rush[aria-pressed="true"]{background:var(--circ);color:#0c0e12;border-color:var(--circ)}
+#bar button[hidden]{display:none}
+#story{position:fixed;left:50%;transform:translateX(-50%);bottom:76px;width:min(600px,calc(100% - 32px));
+  background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:14px 18px 16px;backdrop-filter:blur(8px);
+  box-shadow:0 20px 50px rgba(0,0,0,.45)}
+#story[hidden]{display:none}
+#story .t{display:none}  /* no caption text: the presenter narrates; step line, number boxes and buttons stay */
+body.driver #story .res{display:none}  /* driver's seat: keep the road clear */
+#story .k{font-size:13px;font-weight:800;letter-spacing:.06em;color:var(--mute)}
+#story .k.old{color:var(--circ)} #story .k.new{color:var(--go)}
+#story .t{font-size:18px;font-weight:600;line-height:1.6;margin-top:4px;text-wrap:pretty}
+#story .t b{color:var(--circ)} #story .t em{font-style:normal;color:var(--go);font-weight:800}
+#story .res{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+#story .res[hidden]{display:none}
+#story .cell{border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+#story .cell .l{font-size:13px;font-weight:700;color:var(--mute)}
+#story .cell .v{font-family:var(--f-num);font-size:28px;font-weight:700;font-variant-numeric:tabular-nums;line-height:1.25}
+#story .cell .v small{font-family:var(--f-body);font-size:15px;color:var(--mute);font-weight:600}
+#story .cell.bad{border-color:rgba(255,181,71,.5)} #story .cell.bad .v{color:var(--circ)}
+#story .cell.good{border-color:rgba(62,224,138,.5)} #story .cell.good .v{color:var(--go)}
+#story .res.eq{display:flex;flex-wrap:wrap;align-items:stretch;gap:6px}
+#story .eq .cell{flex:1 1 0;min-width:76px;text-align:center;padding:8px 6px}
+#story .eq .op{align-self:center;font-family:var(--f-num);font-size:24px;font-weight:700;color:var(--mute)}
+#story .cell.cin{border-color:rgba(62,224,138,.5)} #story .cell.cin .v{color:var(--go)}
+#story .cell.cout{border-color:rgba(255,107,138,.5)} #story .cell.cout .v{color:var(--cam)}
+#story .cell.park{border-color:rgba(224,93,93,.55)} #story .cell.park .v{color:#ff8a8a}
+#story .save{grid-column:1/-1;font-size:16px;font-weight:700;color:var(--ink);line-height:1.6}
+#story .btns{display:flex;gap:8px;justify-content:flex-end;margin-top:12px;flex-wrap:wrap}
+#story .btns[hidden]{display:none}
+#story .btns button{font:inherit;font-size:15px;font-weight:700;min-height:44px;padding:0 18px;border-radius:999px;cursor:pointer;
+  border:1px solid var(--line);background:transparent;color:var(--ink)}
+#story .btns button:disabled{opacity:.45;cursor:default}
+#story .btns button.pri{background:var(--go);border-color:var(--go);color:#0c0e12}
+#story .btns button:focus-visible{outline:3px solid var(--up);outline-offset:2px}
+@media (max-width:520px){#story{padding:10px 14px 12px}#story .t{font-size:15px}#story .cell .v{font-size:22px}}
 @media (max-width:520px){#hud{min-width:0;font-size:12px;padding:8px 12px}#hud .r b{font-size:13px}#bar button{font-size:13px;padding:0 12px}#big{padding:6px 12px 8px}#big .num{font-size:40px}#big .num small{font-size:24px}}
+/* CCTV view: the WebGL feed goes grey like a real camera; boxes, the counting line and the OSD are drawn on top in colour. */
+body.cctv #stage canvas{filter:grayscale(1) contrast(1.18) brightness(1.08)}
+body.cctv #hud, body.cctv #big{display:none}
+#cctv{position:fixed;inset:0;pointer-events:none}
+#cctv[hidden]{display:none}
+#cctv canvas{position:absolute;inset:0;width:100%;height:100%}
+#cctv .fx{position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(0,0,0,.16) 0 1px,transparent 1px 3px),
+  radial-gradient(ellipse at center,transparent 55%,rgba(0,0,0,.6))}
+#how{position:fixed;right:16px;top:calc(16px + env(safe-area-inset-top,0px));width:340px;max-height:calc(100% - 120px);overflow:auto;
+  background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:12px 16px 14px;backdrop-filter:blur(6px)}
+#how[hidden]{display:none}
+#how .tabs{display:flex;gap:6px}
+#how .tabs button{flex:1;font:inherit;font-size:13px;font-weight:700;min-height:40px;border-radius:999px;cursor:pointer;
+  border:1px solid var(--line);background:transparent;color:var(--ink)}
+#how .tabs button[aria-pressed="true"]{background:var(--cam);border-color:var(--cam);color:#0c0e12}
+#how .tabs button:focus-visible{outline:3px solid var(--up);outline-offset:2px}
+#how h2{font-size:17px;font-weight:800;margin:12px 0 6px}
+#how ol{margin:0;padding-left:22px;font-size:14px;font-weight:500;line-height:1.6;color:#c3cad4}
+#how ol li{margin-bottom:4px}
+#how ol b{color:var(--ink);font-weight:800}
+#how .math{margin-top:10px;border-top:1px solid var(--line);padding-top:10px}
+#how .eq{font-size:14px;font-weight:600;color:#c3cad4;line-height:1.9}
+#how .eq span{color:var(--ink);font-weight:800}
+#how .eq b{font-family:var(--f-num);font-weight:700;color:var(--ink);font-variant-numeric:tabular-nums}
+#how .eq.circ span,#how .eq.circ b:last-child{color:var(--circ)}
+#how .eq.sum span,#how .eq.sum b:last-child{color:var(--go)}
+#how .src{font-size:12px;color:var(--mute);margin-top:4px;line-height:1.5}
+#how .note{margin-top:10px;font-size:14px;font-weight:600;line-height:1.6;color:var(--circ)}
+#how .note[hidden],#how .math[hidden]{display:none}
+#how .log{margin-top:10px;font-family:var(--f-num);font-size:12px;color:var(--mute);line-height:1.7;min-height:1.7em}
+#how .log .in{color:var(--go)} #how .log .out{color:var(--cam)}
+@media (max-width:640px){#how{left:16px;right:16px;width:auto;padding:8px 12px}#how h2,#how ol,#how .src{display:none}#how .eq{font-size:12px;line-height:1.7}#how .log{display:none}}
 </style>
 
 <div id="stage" aria-label="จำลองที่จอดรถ 3 มิติ: ทางวน ป้าย และชั้น P3" role="img"></div>
+
+<div id="cctv" hidden><canvas id="cctvCv"></canvas><div class="fx"></div></div>
+
+<aside id="how" hidden aria-label="กล้องนับรถยังไง">
+  <div class="tabs" role="group" aria-label="เลือกกล้อง">
+    <button id="tIn" type="button" aria-pressed="true">CAM 1 · ทางเข้า</button>
+    <button id="tOut" type="button" aria-pressed="false">CAM 2 · ทางออก</button>
+  </div>
+  <h2>กล้องนับรถยังไง</h2>
+  <ol>
+    <li><b>เห็นรถ</b> ตีกรอบรถทุกคันที่กำลังขับอยู่ในภาพ</li>
+    <li><b>ติดตาม</b> ให้หมายเลขแต่ละคัน (#7) แล้วตามไปทุกเฟรม คันเดียวจึงไม่ถูกนับซ้ำ</li>
+    <li><b>ข้ามเส้น</b> รถข้ามเส้นนับเข้าชั้น = +1 · ข้ามออก = −1 · รถที่ขับผ่านขึ้น P4 ไม่ข้ามเส้น จึงไม่ถูกนับ</li>
+  </ol>
+  <div class="math" id="mMath">
+    <div class="eq"><span>รถในชั้น</span> = เข้า <b id="mIn">0</b> − ออก <b id="mOut">0</b> = <b id="mOn">0</b></div>
+    <div class="eq circ"><span>กำลังวนหา</span> = รถในชั้น <b id="mOn2">0</b> − จอดแล้ว <b id="mPark">0</b> = <b id="mCirc">0</b></div>
+    <div class="eq sum"><span>เหลือจริง</span> = ว่าง <b id="mFree">0</b> − วนหา <b id="mCirc2">0</b> = <b id="mEff">0</b></div>
+    <div class="src">เข้า / ออก มาจากกล้อง 2 ตัวนี้ · จอดแล้ว มาจากเซนเซอร์ช่องจอด</div>
+  </div>
+  <div class="note" id="mNote" hidden></div>
+  <div class="log" id="mLog" aria-live="polite"></div>
+</aside>
 
 <div id="hud" aria-live="polite">
   <div class="r cam"><span>CAM 1 · เข้า</span><b id="hIn">0</b></div>
@@ -60,11 +151,23 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);ov
   <div class="num"><span id="bigOn">0</span><small>/<span id="bigCap">0</span></small></div>
 </div>
 
+<div id="story" hidden aria-live="polite">
+  <div class="k" id="stK"></div>
+  <div class="t" id="stT"></div>
+  <div class="res" id="stRes" hidden></div>
+  <div class="btns" id="stBtns" hidden>
+    <button id="stClose" type="button">ปิด</button>
+    <button id="stNext" class="pri" type="button"></button>
+  </div>
+</div>
+
 <div id="bar">
+  <button id="bRush" class="rush" type="button" aria-pressed="false">จำลองช่วงรถแน่น</button>
   <button id="bIn" class="in" type="button">+ รถเข้า</button>
   <button id="bOut" class="out" type="button">รถออกจาก P3</button>
   <button id="bAuto" type="button" aria-pressed="true">อัตโนมัติ</button>
   <button id="bView" type="button" aria-pressed="false">มุมคนขับ</button>
+  <button id="bCctv" type="button" aria-pressed="false">มุมกล้อง CCTV</button>
   <button id="bFault" type="button" aria-pressed="false">กล้องขัดข้อง</button>
   <button id="bHud" type="button" aria-pressed="true">ตัวเลข</button>
   <button id="bMode" type="button" aria-pressed="false">ระบบเดิม</button>
@@ -95,10 +198,14 @@ controls.enableDamping = true;
 controls.maxPolarAngle = Math.PI * 0.47;
 controls.minDistance = 8; controls.maxDistance = 110;
 
+let cctvFov = 0;  // a ceiling camera has a wider lens than the orbit view
+const cctvCv = document.getElementById('cctvCv'), cctx = cctvCv.getContext('2d');
 function resize() {
   const w = stage.clientWidth, h = stage.clientHeight;
   renderer.setSize(w, h, false); camera.aspect = w / h;
-  camera.fov = w < 640 ? 62 : 48; camera.updateProjectionMatrix();
+  camera.fov = cctvFov ? (w < 640 ? cctvFov + 18 : cctvFov) : w < 640 ? 62 : 48; camera.updateProjectionMatrix();
+  const dpr = Math.min(devicePixelRatio, 2);
+  cctvCv.width = w * dpr; cctvCv.height = h * dpr; cctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 }
 addEventListener('resize', resize); resize();
 
@@ -219,7 +326,9 @@ ROWS.forEach(r => {
   }
 });
 const CAP = bays.length;
-const UP_AT = 32;  // cars on P3 needed before the sign shows UP
+// Same rule as nocap/core/decide.py and config/mall.yaml: UP only when this floor is nearly gone
+// AND the floor above is clearly better. The old system runs the same rule but cannot see circling cars.
+const LOW_THRESHOLD = 1, MARGIN_UP = 8;
 function setBay(b, occ) { b.occupied = occ; b.dot.material.color.set(occ ? 0xe05d5d : 0x3ee08a); }
 
 /* ---------- counting cameras ---------- */
@@ -383,6 +492,10 @@ function decide(c) {
   if (free.length) { const b = free[Math.floor(Math.random() * free.length)]; b.reserved = true; c.bay = b; c.path.push(...bayApproach(b)); }
   else { c.mode = 'loop'; c.path.push(...AISLE1_TO_EXIT, ...EXIT_UP); }
 }
+function decideAndTrack(c) {
+  decide(c);
+  if (c.you) onYouDecided(c);
+}
 function departRandom() {
   const parked = cars.filter(c => c.mode === 'parked');
   if (!parked.length) return;
@@ -391,18 +504,24 @@ function departRandom() {
   c.mode = 'leaving'; c.path = bayLeave(c.bay); c.i = 0; c.bay = null; c.seg = null;
 }
 
-(function seed() {
-  bays.map((_, i) => i).sort(() => Math.random() - 0.5).slice(0, 26).forEach(i => {
-    const b = bays[i], g = makeCar();
-    g.position.set(b.x, 0, b.z); g.rotation.y = b.face;
-    setBay(b, true); b.reserved = true;
-    cars.push({ g, path: [], i: 0, mode: 'parked', bay: b, heading: b.face, blockedT: 0 });
-  });
-})();
+function parkAt(b) {
+  const g = makeCar();
+  g.position.set(b.x, 0, b.z); g.rotation.y = b.face;
+  setBay(b, true); b.reserved = true;
+  cars.push({ g, path: [], i: 0, mode: 'parked', bay: b, heading: b.face, blockedT: 0 });
+}
+function seedRandom() {
+  bays.map((_, i) => i).sort(() => Math.random() - 0.5).slice(0, 26).forEach(i => parkAt(bays[i]));
+}
+seedRandom();
 
 /* ---------- counting + sign ---------- */
 const state = { mode: 'new', inCount: 26, outCount: 0, p4: 18, camOk: true, shown: 'GO', pending: null, pendingT: 0 };
 const fx = [];
+// tracker IDs: handed out the first time a camera sees a car, like a real tracker would
+const trackIds = new WeakMap(); let nextTrackId = 1;
+const idOf = c => { if (!trackIds.has(c)) trackIds.set(c, nextTrackId++); return trackIds.get(c); };
+const crossLog = [];
 function makeTag(text, color) {
   const cv = document.createElement('canvas'); cv.width = 256; cv.height = 128;
   const c = cv.getContext('2d'); c.font = `700 96px ${MONO}`; c.textAlign = 'center'; c.textBaseline = 'middle';
@@ -412,6 +531,8 @@ function makeTag(text, color) {
 }
 function detect(car, dir) {
   if (dir === 'in') state.inCount++; else state.outCount++;
+  car.cnt = { dir, t: performance.now() };
+  crossLog.unshift({ id: idOf(car), dir, at: new Date().toLocaleTimeString('en-GB') }); crossLog.length = Math.min(crossLog.length, 3);
   if (state.mode === 'old') return;  // old system has no cameras: count silently, no visuals
   cams[dir].flash = 1;
   const color = dir === 'in' ? 0x3ee08a : 0xff6b8a;
@@ -427,9 +548,10 @@ function compute() {
   const free = CAP - parked, eff = free - circ;
   // old: bay sensors only (taken spaces), cameras ignored. new (No Cap): cars on floor from the cameras.
   const old = state.mode === 'old', count = old ? parked : onFloor;
+  const here = old ? free : eff;  // what each system believes is left on P3
   let raw = 'GO';
   if (!old && !state.camOk) raw = 'NO';
-  else if (count >= UP_AT) raw = 'UP';  // sign says go up only once this many cars are counted on P3
+  else if (here <= LOW_THRESHOLD && state.p4 - here >= MARGIN_UP) raw = 'UP';
   return { parked, onFloor, circ, free, eff, raw, old, count };
 }
 const $ = id => document.getElementById(id);
@@ -456,6 +578,16 @@ function updateSignAndHud(dt) {
   $('hP4').textContent = above;
   $('bigOn').textContent = signOk ? k.count : '–';
   $('bigCap').textContent = CAP;
+  if (isCctv(view)) {
+    const set = (id, v) => { $(id).textContent = String(v).replace('-', '−'); };
+    set('mIn', state.inCount); set('mOut', state.outCount); set('mOn', k.onFloor); set('mOn2', k.onFloor);
+    set('mPark', k.parked); set('mCirc', k.circ); set('mCirc2', k.circ); set('mFree', k.free); set('mEff', k.eff);
+    const note = k.old ? 'ระบบเดิมไม่มีกล้องนับรถ รู้แค่ “จอดแล้ว” จากเซนเซอร์ช่องจอด จึงไม่รู้ว่ามีรถวนหาที่อยู่กี่คัน · ภาพนี้คือมุมที่ No Cap จะติดกล้อง'
+      : !ok ? 'กล้องขาดสัญญาณ นับรถไม่ได้ ป้ายจึงขึ้น “ไม่แนะนำ” ทันที แทนที่จะเดาตัวเลข' : '';
+    $('mNote').textContent = note; $('mNote').hidden = !note; $('mMath').hidden = !!note;
+    const logHtml = k.old || !ok ? '' : crossLog.map(e => `<div class="${e.dir}">${e.at}  #${e.id} ข้ามเส้น${e.dir === 'in' ? 'เข้า +1' : 'ออก −1'}</div>`).join('');
+    if ($('mLog').innerHTML !== logHtml) $('mLog').innerHTML = logHtml;
+  }
 }
 
 /* ---------- movement ---------- */
@@ -464,7 +596,7 @@ function angleLerp(a, b, t) { let d = ((b - a + Math.PI) % (Math.PI * 2)) - Math
 function blocked(c) {
   const fx_ = Math.sin(c.heading), fz = Math.cos(c.heading);
   for (const o of cars) {
-    if (o === c || o.mode === 'parked') continue;
+    if (o === c || o.mode === 'parked' || !o.g.visible) continue;
     tmp.subVectors(o.g.position, c.g.position);
     if (Math.abs(tmp.y) > 1.6) continue;
     const along = tmp.x * fx_ + tmp.z * fz; if (along <= 0 || along > 5.6) continue;
@@ -478,10 +610,12 @@ function stepCar(c, dt) {
   if (!wp) { finish(c); return; }
   const pos = c.g.position;
   if (!c.seg) c.seg = { x: pos.x, z: pos.z, y: pos.y, len: Math.max(1e-3, Math.hypot(wp.x - pos.x, wp.z - pos.z)) };
+  if (c.track) c.trackT += dt;  // waiting behind another car counts as lost time too
   if (!wp.rev) { if (blocked(c)) { c.blockedT += dt; if (c.blockedT < 3) return; } else c.blockedT = 0; }
   const dx = wp.x - pos.x, dz = wp.z - pos.z, dist = Math.hypot(dx, dz);
-  const speed = wp.slow ? 2.4 : pos.x < 4 ? 6.5 : 5;
+  const speed = wp.slow ? 2.4 : c.hunt && pos.x >= 4 ? 3.5 : pos.x < 4 ? 6.5 : 5;  // hunting = crawling, looking for a bay
   const step = Math.min(dist, speed * dt), prevX = pos.x;
+  if (c.track) c.trackD += step;
   if (dist > 1e-4) {
     pos.x += dx / dist * step; pos.z += dz / dist * step;
     const want = wp.rev ? Math.atan2(-dx, -dz) : Math.atan2(dx, dz);
@@ -493,28 +627,143 @@ function stepCar(c, dt) {
   c.g.rotation.x = wp.rev ? 0 : -Math.atan2(wp.y - c.seg.y, c.seg.len);
   if (prevX < 5 && pos.x >= 5 && pos.z > -8.6 && pos.z < -3.4) detect(c, 'in');
   if (prevX > 5 && pos.x <= 5 && pos.z > -24.6 && pos.z < -19.4) detect(c, 'out');
-  if (dist - step < 0.08) { if (wp.decide) decide(c); c.i++; c.seg = null; }
+  if (dist - step < 0.08) {
+    if (wp.decide) decideAndTrack(c);
+    if (wp.goal && c.you) onYouRejoined(c);
+    c.i++; c.seg = null;
+  }
 }
 function finish(c) {
+  if (c.label) { scene.remove(c.label); c.label = null; }
   if (c.bay && c.mode === 'enter') {
     c.mode = 'parked'; setBay(c.bay, true); c.heading = c.bay.face;
-    c.g.rotation.set(0, c.heading, 0); c.g.position.y = 0; return;
+    c.g.rotation.set(0, c.heading, 0); c.g.position.y = 0;
+    if (scenario && bays.every(b => b.occupied)) onFloorFull();
+    return;
   }
   scene.remove(c.g); cars.splice(cars.indexOf(c), 1);
 }
 
 /* ---------- views ---------- */
 const drvT = 2.3, drvP = onCircle(R_OUT, drvT);
+// rush scenario: cut to the driver's seat once your car is just ahead of that viewpoint (so it is in shot, not inside the camera)
+const DRV_CUT_I = Math.round((SPAWN_T - (drvT - 0.5)) / (SPAWN_T - DECIDE_T) * APPROACH.length);
 const VIEWS = {
   wide: { pos: new THREE.Vector3(3, 38, 34), target: new THREE.Vector3(4, -1, -14) },
   driver: { pos: new THREE.Vector3(drvP.x, yOut(drvT) + 1.25, drvP.z), target: new THREE.Vector3(signPos.x, signLaneY + 2.3, signPos.z) },
 };
 camera.position.copy(VIEWS.wide.pos); controls.target.copy(VIEWS.wide.target);
 let view = 'wide', camTween = null;
+// Each counting camera hangs on the floor side of its line and looks straight down the lane toward the ramp.
+const CCTV = {
+  camIn: { dir: 'in', name: 'CAM 1 · ทางเข้า P3', pos: new THREE.Vector3(14, 6.2, -6), target: new THREE.Vector3(1, 0, -6.6),
+    roi: { x0: -5, x1: 17, z0: -11, z1: -1 }, line: [-8.6, -3.4] },
+  camOut: { dir: 'out', name: 'CAM 2 · ทางออก P3', pos: new THREE.Vector3(14, 6.2, -22), target: new THREE.Vector3(1, 0, -21.4),
+    roi: { x0: -5, x1: 17, z0: -27, z1: -17 }, line: [-24.6, -19.4] },
+};
+const isCctv = v => v in CCTV;
 function goView(v) {
   view = v; const to = VIEWS[v];
   camTween = { t: 0, fromP: camera.position.clone(), fromT: controls.target.clone(), toP: to.pos.clone(), toT: to.target.clone() };
   controls.enabled = v === 'wide';
+}
+function syncCamMeshes() {  // the camera models and their cones would block their own feed
+  Object.values(cams).forEach(c => { c.g.visible = c.cone.visible = c.beam.visible = state.mode !== 'old' && !isCctv(view); });
+}
+function setView(v, cut = false) {
+  if (isCctv(v) || cut) {  // a CCTV switch is a hard cut, not a fly-over
+    const to = CCTV[v] || VIEWS[v];
+    view = v; camTween = null; controls.enabled = v === 'wide';
+    camera.position.copy(to.pos); controls.target.copy(to.target);
+  } else goView(v);
+  cctvFov = isCctv(v) ? 68 : 0; resize();
+  document.body.classList.toggle('cctv', isCctv(v));
+  document.body.classList.toggle('driver', v === 'driver');
+  $('cctv').hidden = $('how').hidden = !isCctv(v);
+  $('bView').setAttribute('aria-pressed', String(v === 'driver'));
+  $('bCctv').setAttribute('aria-pressed', String(isCctv(v)));
+  $('tIn').setAttribute('aria-pressed', String(v === 'camIn'));
+  $('tOut').setAttribute('aria-pressed', String(v === 'camOut'));
+  syncCamMeshes(); lastSignKey = '';
+}
+
+/* ---------- CCTV overlay: what the counting software draws over the feed ---------- */
+const bb = new THREE.Box3(), pv = new THREE.Vector3();
+function toScreen(x, y, z, W, H) {
+  pv.set(x, y, z).project(camera);
+  return pv.z > 1 ? null : { x: (pv.x + 1) / 2 * W, y: (1 - pv.y) / 2 * H };
+}
+function screenBox(obj, W, H) {
+  bb.setFromObject(obj);
+  let x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity;
+  for (let i = 0; i < 8; i++) {
+    const q = toScreen(i & 1 ? bb.max.x : bb.min.x, i & 2 ? bb.max.y : bb.min.y, i & 4 ? bb.max.z : bb.min.z, W, H);
+    if (!q) return null;
+    x0 = Math.min(x0, q.x); y0 = Math.min(y0, q.y); x1 = Math.max(x1, q.x); y1 = Math.max(y1, q.y);
+  }
+  if (x1 < 0 || y1 < 0 || x0 > W || y0 > H) return null;
+  return { x0, y0, x1, y1 };
+}
+function chip(c, x, y, text, bg, fg = '#0c0e12') {
+  c.font = `700 13px ${MONO}, ${TH}`;
+  const w = c.measureText(text).width + 12;
+  c.fillStyle = bg; c.fillRect(x, y - 20, w, 20);
+  c.fillStyle = fg; c.textBaseline = 'middle'; c.textAlign = 'left'; c.fillText(text, x + 6, y - 9.5);
+}
+const noiseCv = document.createElement('canvas'); noiseCv.width = 160; noiseCv.height = 90;
+const nctx = noiseCv.getContext('2d'), noiseImg = nctx.createImageData(160, 90);
+function drawCctv() {
+  const W = stage.clientWidth, H = stage.clientHeight, c = cctx, cam = CCTV[view], now = performance.now();
+  c.clearRect(0, 0, W, H);
+  const top = W < 640 ? $('how').getBoundingClientRect().bottom + 10 : 18;
+
+  if (state.mode !== 'old' && !state.camOk) {  // dead feed: static + NO SIGNAL
+    for (let i = 0; i < noiseImg.data.length; i += 4) { const g = Math.random() * 200; noiseImg.data[i] = noiseImg.data[i + 1] = noiseImg.data[i + 2] = g; noiseImg.data[i + 3] = 255; }
+    nctx.putImageData(noiseImg, 0, 0); c.imageSmoothingEnabled = false; c.globalAlpha = 0.92; c.drawImage(noiseCv, 0, 0, W, H); c.globalAlpha = 1;
+    c.fillStyle = 'rgba(0,0,0,.75)'; c.fillRect(W / 2 - 170, H / 2 - 52, 340, 104);
+    c.textAlign = 'center'; c.textBaseline = 'middle'; c.fillStyle = '#ff6b8a';
+    c.font = `700 34px ${MONO}`; c.fillText('NO SIGNAL', W / 2, H / 2 - 16);
+    c.font = `700 18px ${TH}`; c.fillStyle = '#e9edf2'; c.fillText('สัญญาณกล้องขาด · นับรถไม่ได้', W / 2, H / 2 + 24);
+  } else if (state.mode !== 'old') {
+    // the virtual counting line on the floor
+    const a = toScreen(5, 0.05, cam.line[0], W, H), b = toScreen(5, 0.05, cam.line[1], W, H);
+    const hot = cams[cam.dir].flash, base = cam.dir === 'in' ? '#3ee08a' : '#ff6b8a';
+    if (a && b) {
+      c.save(); c.lineWidth = 4 + hot * 4; c.strokeStyle = hot > 0.05 ? base : '#ff6b8a'; c.setLineDash([14, 9]);
+      c.shadowColor = c.strokeStyle; c.shadowBlur = 8 + hot * 20;
+      c.beginPath(); c.moveTo(a.x, a.y); c.lineTo(b.x, b.y); c.stroke(); c.restore();
+      const lx = Math.min(a.x, b.x), ly = Math.max(a.y, b.y) + 26;
+      chip(c, lx, ly, cam.dir === 'in' ? 'เส้นนับ · ข้ามเข้าชั้น = +1' : 'เส้นนับ · ข้ามออกจากชั้น = −1', 'rgba(255,107,138,.92)');
+    }
+    // one box per moving car in the camera's area, with its tracker ID
+    const r = cam.roi;
+    for (const car of cars) {
+      const q = car.g.position;
+      if (car.mode === 'parked' || !car.g.visible || Math.abs(q.y) > 1.3 || q.x < r.x0 || q.x > r.x1 || q.z < r.z0 || q.z > r.z1) continue;
+      const s = screenBox(car.g, W, H); if (!s) continue;
+      const id = idOf(car), mine = car.cnt && car.cnt.dir === cam.dir, age = mine ? (now - car.cnt.t) / 1000 : 99;
+      let col = '#59c3ff', text = `#${id} รถ`;
+      if (mine && age < 1.6) { col = base; text = cam.dir === 'in' ? `#${id}  +1 เข้า` : `#${id}  −1 ออก`; }
+      else if (mine) { col = cam.dir === 'in' ? 'rgba(62,224,138,.7)' : 'rgba(255,107,138,.7)'; text = `#${id} นับแล้ว`; }
+      else if (car.mode === 'up' && cam.dir === 'in') { col = '#aab2bd'; text = `#${id} ขึ้น P4 · ไม่นับ`; }
+      c.lineWidth = mine && age < 1.6 ? 3.5 : 2; c.strokeStyle = col;
+      c.strokeRect(s.x0, s.y0, s.x1 - s.x0, s.y1 - s.y0);
+      chip(c, s.x0, s.y0, text, col);
+    }
+  }
+  // on-screen display
+  c.textAlign = 'left'; c.textBaseline = 'top';
+  if (Math.floor(now / 600) % 2 === 0) { c.fillStyle = '#ff3b4e'; c.beginPath(); c.arc(30, top + 11, 7, 0, Math.PI * 2); c.fill(); }
+  c.fillStyle = '#f2f4f7'; c.font = `700 18px ${MONO}`; c.fillText('REC', 44, top + 1);
+  c.font = `700 18px ${MONO}, ${TH}`; c.fillText(cam.name, 96, top + 1);
+  c.font = `500 15px ${MONO}`; c.fillStyle = '#c3cad4';
+  c.fillText(new Date().toLocaleString('sv-SE'), 22, top + 30);
+  if (state.mode === 'old') {
+    c.font = `700 16px ${TH}`; c.fillStyle = '#ffb547'; c.fillText('ระบบเดิม: ไม่มีกล้องนับรถ', 22, top + 56);
+  } else if (state.camOk) {
+    c.font = `700 16px ${MONO}, ${TH}`; c.fillStyle = cam.dir === 'in' ? '#3ee08a' : '#ff6b8a';
+    c.fillText(cam.dir === 'in' ? `นับเข้าแล้ว ${state.inCount} คัน` : `นับออกแล้ว ${state.outCount} คัน`, 22, top + 56);
+  }
 }
 
 /* ---------- auto traffic ---------- */
@@ -531,22 +780,274 @@ function tickAuto(dt) {
 $('bIn').addEventListener('click', spawnArrival);
 $('bOut').addEventListener('click', departRandom);
 $('bAuto').addEventListener('click', e => { auto = !auto; e.currentTarget.setAttribute('aria-pressed', String(auto)); });
-$('bView').addEventListener('click', e => { const d = view !== 'driver'; goView(d ? 'driver' : 'wide'); e.currentTarget.setAttribute('aria-pressed', String(d)); });
-$('bFault').addEventListener('click', e => {
-  state.camOk = !state.camOk; e.currentTarget.setAttribute('aria-pressed', String(!state.camOk));
+$('bView').addEventListener('click', () => setView(view === 'driver' ? 'wide' : 'driver'));
+$('bCctv').addEventListener('click', () => setView(isCctv(view) ? 'wide' : 'camIn'));
+$('tIn').addEventListener('click', () => setView('camIn'));
+$('tOut').addEventListener('click', () => setView('camOut'));
+function setFault(on) {
+  state.camOk = !on; $('bFault').setAttribute('aria-pressed', String(on));
   Object.values(cams).forEach(c => { const col = state.camOk ? 0xff6b8a : 0x5b6371; c.cone.material.color.set(col); c.beam.material.color.set(col); });
-});
-$('bMode').addEventListener('click', e => {
-  state.mode = state.mode === 'new' ? 'old' : 'new';
-  const old = state.mode === 'old';
-  e.currentTarget.setAttribute('aria-pressed', String(old));
+}
+function setMode(m) {
+  state.mode = m;
+  const old = m === 'old';
+  $('bMode').setAttribute('aria-pressed', String(old));
   $('bigLbl').textContent = old ? 'ระบบเดิม · จอดแล้ว P3 / ช่องทั้งหมด' : 'รถในชั้น P3 / ช่องทั้งหมด';
   state.pending = null;
-  Object.values(cams).forEach(c => { c.g.visible = c.cone.visible = c.beam.visible = !old; });
+  syncCamMeshes();
   document.querySelectorAll('#hud .cam, #hud .camdata').forEach(r => { r.hidden = old; });
-  $('bFault').hidden = old;
-});
+  $('bFault').hidden = old || !!scenario;
+}
+$('bFault').addEventListener('click', () => setFault(state.camOk));
+$('bMode').addEventListener('click', () => setMode(state.mode === 'new' ? 'old' : 'new'));
 $('bHud').addEventListener('click', e => { const h = $('hud'); h.hidden = !h.hidden; e.currentTarget.setAttribute('aria-pressed', String(!h.hidden)); });
+
+/* ---------- rush-hour scenario: the same moment, played twice ----------
+   P3 has 4 free bays and 4 cars already circling ahead of you. The old sign (bay sensors only)
+   says "4 free, turn in"; No Cap subtracts the circling cars and says "go up". */
+let scenario = null;
+const RUSH_FREE = [18, 19, 29, 30];   // bays left empty: the far aisle, so the hunters reach them after you pass the sign
+// [x, z, heading, where to join AISLE1_TO_EXIT, bay index] -- front of the queue first; each takes one of the 4 free bays
+const RUSH_HUNTERS = [
+  [31.5, -16.8, Math.PI, 2, 18], [31.5, -10.3, Math.PI, 2, 19], [27.5, -6, Math.PI / 2, 0, 29],
+  [21, -6, Math.PI / 2, 0, 30],
+];
+function makeLabel(text, color, w = 256) {
+  const cv = document.createElement('canvas'); cv.width = w; cv.height = 128;
+  const c = cv.getContext('2d');
+  roundRect(c, 8, 14, w - 16, 100, 50); c.fillStyle = 'rgba(10,12,16,.88)'; c.fill();
+  c.lineWidth = 7; c.strokeStyle = color; c.stroke();
+  c.fillStyle = color; c.font = `800 66px ${TH}`; c.textAlign = 'center'; c.textBaseline = 'middle'; c.fillText(text, w / 2, 70);
+  const s = new THREE.Sprite(new THREE.SpriteMaterial({ map: new THREE.CanvasTexture(cv), transparent: true, depthTest: false }));
+  s.scale.set(1.3 * w / 128, 1.3, 1); s.renderOrder = 10; scene.add(s); return s;
+}
+// sprites + bay pulse used by round 2's "how we count the circling cars" beats
+const countFx = []; let bayPulse = false, camGlow = false;
+function addCountFx(s, x, y, z) { s.position.set(x, y, z); s.scale.multiplyScalar(1.7); countFx.push(s); return s; }
+function clearCountFx() {
+  for (const s of countFx) scene.remove(s); countFx.length = 0;
+  bayPulse = camGlow = false; bays.forEach(b => b.dot.scale.setScalar(1));
+}
+function clearGarage() {
+  replay = null;
+  clearCountFx();
+  for (const c of cars) { scene.remove(c.g); if (c.label) scene.remove(c.label); }
+  cars.length = 0; queued = 0;
+  for (const f of fx) scene.remove(f.helper, f.tag); fx.length = 0;
+  bays.forEach(b => { setBay(b, false); b.reserved = false; });
+}
+function story(kicker, cls, html) {
+  $('stK').textContent = kicker; $('stK').className = 'k ' + cls; $('stT').innerHTML = html;
+}
+function placeStory() { $('story').style.bottom = ($('bar').offsetHeight + 4) + 'px'; }
+addEventListener('resize', placeStory);
+const fmt = r => `<span>${Math.round(r.d)}</span><small> ม. · </small><span>${Math.round(r.t)}</span><small> วินาที</small>`;
+
+/* Step-by-step: every beat freezes the garage and waits for the presenter to click (or press -> / PageDown). */
+function pause(step, html, next, label = 'ถัดไป ▶', resHtml = '', sub = '') {
+  const old = scenario.round === 1;
+  scenario.paused = true; scenario.next = next;
+  story(`รอบที่ ${scenario.round} / 2 · ${old ? 'ระบบเดิม' : 'No Cap'} · ขั้นที่ ${step} / 4${sub ? ' · ' + sub : ''}`, old ? 'old' : 'new', html);
+  $('stRes').innerHTML = resHtml; $('stRes').hidden = !resHtml;
+  $('stRes').classList.toggle('eq', resHtml.includes('class="op"'));
+  const b = $('stNext'); b.disabled = false; b.textContent = label;
+  placeStory(); b.focus({ preventScroll: true });
+}
+function advance() {
+  if (!scenario || !scenario.paused) return;
+  const next = scenario.next;
+  scenario.paused = false; scenario.next = null;
+  const b = $('stNext'); b.disabled = true; b.textContent = 'กำลังเล่น…';
+  if (next) next();
+}
+
+function startRound(round) {
+  const old = round === 1;
+  clearGarage();
+  bays.forEach((b, i) => { if (!RUSH_FREE.includes(i)) parkAt(b); });
+  scenario = Object.assign(scenario || { results: [] }, { round, paused: false, next: null, full: false, rejoined: false, beat3: false, drvCut: false });
+  auto = false; $('bAuto').setAttribute('aria-pressed', 'false');
+  ['bIn', 'bOut', 'bAuto', 'bMode', 'bFault'].forEach(id => { $(id).hidden = true; });
+  setFault(false); setMode(old ? 'old' : 'new');
+
+  for (const [x, z, h, join, bi] of RUSH_HUNTERS) {
+    const g = makeCar(); g.position.set(x, 0, z); g.rotation.y = h;
+    const tail = bi === null ? EXIT_UP : bayApproach(bays[bi]).slice(4);
+    const c = { g, path: [...AISLE1_TO_EXIT.slice(join), ...tail], i: 0, mode: bi === null ? 'loop' : 'enter', heading: h, blockedT: 0, hunt: true };
+    if (bi !== null) { c.bay = bays[bi]; bays[bi].reserved = true; }
+    c.label = makeLabel('?', '#ffb547', 128);
+    cars.push(c);
+  }
+  crossLog.length = 0; nextTrackId = 1;  // fresh camera log + tracker IDs for each round
+  // the ramp cameras have already counted everyone now on P3: 28 parked + 4 circling
+  Object.assign(state, { inCount: CAP - RUSH_FREE.length + RUSH_HUNTERS.length, outCount: 0, p4: 18, pending: null });
+  state.shown = compute().raw; lastSignKey = '';
+
+  const yg = makeCar(); yg.children[0].material.color.set(0xffc83d);
+  const heading = Math.atan2(Math.sin(SPAWN_T), -Math.cos(SPAWN_T));
+  yg.position.set(spawnPt.x, yOut(SPAWN_T), spawnPt.z); yg.rotation.y = heading;
+  const you = { g: yg, path: [...APPROACH], i: 0, mode: 'approach', heading, blockedT: 0, you: true };
+  you.label = makeLabel('คุณ', '#ffc83d');
+  cars.push(you);
+
+  if (view !== 'wide') setView('wide');
+  $('story').hidden = false; $('stBtns').hidden = false;
+  if (old) pause(1,
+    'วันเสาร์ ห้างแน่น · ป้ายเดิมนับแค่ช่องว่าง เลยขึ้นว่า <em>P3 ว่าง 4</em> แต่มี <b>รถ 4 คัน (?)</b> กำลังวนหาที่จอดอยู่ข้างหน้าคุณ ซึ่งป้ายมองไม่เห็น',
+    null, 'เริ่มขับ ▶');
+  else countBeat1();
+}
+
+/* Round 2, step 1 split into four clicks: how No Cap arrives at "6 circling" from two counts it can trust. */
+const cell = (l, v, cls = '') => `<div class="cell ${cls}"><div class="l">${l}</div><div class="v">${v}</div></div>`;
+const op = s => `<span class="op">${s}</span>`;
+function countBeat1() {
+  setView('camIn');
+  camGlow = true;
+  addCountFx(makeLabel(`เข้า ${state.inCount}`, '#3ee08a', 320), 5, 6.6, -6);
+  addCountFx(makeLabel(`ออก ${state.outCount}`, '#ff6b8a', 320), 5, 6.6, -22);
+  pause(1, T.c1, countBeat2, 'ถัดไป ▶',
+    cell('กล้องทางเข้า', '<span id="eqIn"></span>', 'cin') + op('−') + cell('กล้องทางออก', state.outCount, 'cout') + op('=') + cell('รถในชั้น', '<span id="eqOn"></span>'),
+    'วิธีนับ 1/4');
+  startReplay();
+}
+/* CCTV replay: the last 6 cars up the ramp. 4 turn into P3 and cross the line (+1 each); 2 stay on the ramp
+   to P4 and are never counted. The 4 circling cars hide meanwhile, so the entrance count climbs 28 -> 32. */
+let replay = null;
+const REPLAY_KINDS = ['in', 'in', 'up', 'in', 'up', 'in'];
+function startReplay() {
+  const hidden = cars.filter(c => c.hunt && !c.you).slice(-4);
+  hidden.forEach(c => { c.g.visible = false; });
+  state.inCount -= hidden.length;
+  replay = { hidden, base: state.inCount, ghosts: [], t: 0, spawned: 0 };
+  document.body.dataset.replay = 'run';
+}
+function tickReplay(dt) {
+  if (!replay) return;
+  const r = replay;
+  r.t += dt;
+  if (r.spawned < REPLAY_KINDS.length && r.t > 0.4 + r.spawned * 1.1) {
+    const up = REPLAY_KINDS[r.spawned] === 'up', t0 = DECIDE_T + 0.35, p0 = onCircle(R_OUT, t0), g = makeCar();
+    g.position.set(p0.x, yOut(t0), p0.z);
+    const path = up ? helix(R_OUT, t0, OUT_B + 0.1, yOut) : [...helix(R_OUT, t0, 0.95, yOut), ...ENTRY, P(17, -6)];
+    const c = { g, path, i: 0, mode: up ? 'up' : 'replay', heading: Math.atan2(Math.sin(t0), -Math.cos(t0)), blockedT: 0, replay: true };
+    g.rotation.y = c.heading; cars.push(c); r.ghosts.push(c); r.spawned++;
+  }
+  for (const c of r.ghosts.slice()) {
+    if (c.mode === 'replay' && c.g.position.x > 13) { scene.remove(c.g); cars.splice(cars.indexOf(c), 1); }  // drove out of shot, under the camera
+    if (!cars.includes(c)) r.ghosts.splice(r.ghosts.indexOf(c), 1);  // gone (the P4 ones finish their own path)
+  }
+  const a = $('eqIn'), b = $('eqOn');
+  if (a) { a.textContent = state.inCount; b.textContent = state.inCount - state.outCount; }
+  if (r.spawned === REPLAY_KINDS.length && !r.ghosts.length) endReplay();
+}
+function endReplay() {
+  if (!replay) return;
+  for (const c of replay.ghosts) { scene.remove(c.g); cars.splice(cars.indexOf(c), 1); }
+  state.inCount = replay.base + replay.hidden.length;  // also right if the presenter clicked on early
+  replay.hidden.forEach(c => { c.g.visible = true; });
+  replay = null;
+  document.body.dataset.replay = 'done';
+}
+function countBeat2() {
+  endReplay();
+  setView('wide', true);
+  camGlow = false; bayPulse = true;
+  const k = compute();
+  addCountFx(makeLabel(`จอดแล้ว ${k.parked}`, '#ff8a8a', 400), 19, 5.2, -14);
+  pause(1, T.c2, countBeat3, 'ถัดไป ▶',
+    cell('รถในชั้น', k.onFloor) + op('−') + cell('จอดแล้ว (เซนเซอร์)', k.parked, 'park') + op('=') + cell('กำลังวนหา', '?', 'bad'),
+    'วิธีนับ 2/4');
+}
+function countBeat3() {
+  clearCountFx();
+  const k = compute(), round = scenario.round;
+  // tag the hunters 1..4 one by one, so the "4" has something to point at
+  cars.filter(c => c.hunt && !c.you).forEach((c, i) => setTimeout(() => {
+    if (!scenario || scenario.round !== round || !cars.includes(c)) return;
+    scene.remove(c.label); c.label = makeLabel(String(i + 1), '#ffb547', 128);
+  }, 250 + i * 320));
+  pause(1, T.c3, countBeat4, 'ถัดไป ▶',
+    cell('รถในชั้น', k.onFloor) + op('−') + cell('จอดแล้ว', k.parked, 'park') + op('=') + cell('กำลังวนหา', k.circ, 'bad'),
+    'วิธีนับ 3/4');
+}
+function countBeat4() {
+  const k = compute();
+  pause(1, T.c4, null, 'เริ่มขับ ▶',
+    cell('ช่องว่าง', k.free) + op('−') + cell('กำลังวนหา', k.circ, 'bad') + op('=') + cell('เหลือจริง', Math.max(0, k.eff), 'good'),
+    'วิธีนับ 4/4');
+}
+const T = {
+  c1: 'สถานการณ์เดิมทุกอย่าง · No Cap รู้ได้ยังไงว่ามี <b>รถ 4 คัน</b> วนหาอยู่? เริ่มจาก<em>กล้องที่ทางลาด</em> กล้องทางเข้านับทุกคันที่ข้ามเส้นเข้า P3 กล้องทางออกนับทุกคันที่ออกไป ลบกันก็ได้จำนวนรถบนชั้นนี้',
+  c2: 'ต่อมาใช้<em>เซนเซอร์ช่องจอดเดิม</em>ของห้าง (จุดสีแดง) ซึ่งรู้อยู่แล้วว่ามีรถจอดกี่คัน รถที่อยู่บนชั้นแต่ไม่ได้จอด ก็คือรถที่กำลังวนหาที่จอด',
+  c3: 'พอรถบนชั้นมากกว่ารถที่จอดอยู่ 4 คัน แปลว่ามี <b>รถ 4 คันกำลังวนหาที่จอด</b> ระบบรู้แค่จำนวน ไม่ต้องรู้ว่าเป็นคันไหน และไม่อ่านป้ายทะเบียน (เลขบนรถใส่ไว้ให้ดูเท่านั้น)',
+  c4: 'ป้ายจะเอารถที่วนหาไปหักจากช่องว่าง: ว่าง 4 − วนหา 4 = <em>เหลือจริง 0</em> ส่วน P4 ยังว่าง 18 ป้ายจึงบอก <em>“ขึ้นชั้นบน”</em>',
+};
+function onYouDecided(c) {
+  c.track = true; c.trackD = 0; c.trackT = 0;
+  if (c.mode === 'loop') c.hunt = true;  // you are now crawling the aisles too
+  // goal = the first point back on the up ramp past P3: both routes end here, so their cost is comparable
+  c.path = c.path.map((p, j) => (j > c.i ? Object.assign({}, p) : p));
+  const g = c.path.find((p, j) => j > c.i && Math.abs(Math.hypot(p.x - C.x, p.z - C.z) - R_OUT) < 0.3 && Math.atan2(p.z - C.z, p.x - C.x) <= -1.0);
+  if (g) g.goal = true;
+  if (scenario.round === 1) pause(2, 'ป้ายบอก <em>“เข้าได้เลย”</em> คุณเลยเลี้ยวเข้า P3 แล้วต้องวนหาช่องตามหลังรถ 4 คันที่มาถึงก่อน', backToWide);
+  else pause(2, 'ป้ายบอก <em>“ขึ้นชั้นบน”</em> คุณเลยขับต่อขึ้น P4 ได้ทันที ไม่ต้องเข้าไปแย่งที่จอดบน P3', backToWide);
+}
+function backToWide() { if (view !== 'wide') setView('wide', true); }
+function onFloorFull() {
+  if (scenario.full) return; scenario.full = true;
+  if (scenario.round === 1) pause(3,
+    'ช่องสุดท้ายถูกรถคันหน้าเอาไปแล้ว ป้ายเดิมเพิ่งรู้ว่าเต็มก็ตอนนี้ ตอนที่รถจอดลงช่องแล้ว แต่คุณเลี้ยวเข้ามาแล้วและย้อนกลับไม่ได้ <b>คุณต้องวนออกไปขึ้น P4 อยู่ดี</b>', null);
+  else roundTwoBeat3();
+}
+function onYouRejoined(c) {
+  c.track = false;
+  scenario.results[scenario.round - 1] = { d: c.trackD, t: c.trackT };
+  scenario.rejoined = true;
+  if (scenario.round === 1) {
+    const r = scenario.results[0];
+    pause(4, 'กลับมาที่ทางลาดขึ้น P4 แล้ว ทั้งที่ป้ายบอกว่า P3 มีที่ว่าง', () => startRound(2), 'รอบที่ 2: ใช้ No Cap ▶',
+      `<div class="cell bad"><div class="l">ระยะทางและเวลาจากป้ายถึงทางขึ้น P4</div><div class="v">${fmt(r)}</div></div>`);
+  } else {
+    story('รอบที่ 2 / 2 · No Cap · ขั้นที่ 3 / 4', 'new', 'คุณขึ้น P4 ไปแล้ว ดูต่อบน P3 ว่ารถที่วนอยู่ก่อนจะได้ที่จอดไหม…');
+    roundTwoBeat3();
+  }
+}
+// Round 2's third beat waits for both: you are back on the ramp AND P3 has filled, so the viewer sees the sign was right.
+function roundTwoBeat3() {
+  if (scenario.beat3 || !scenario.full || !scenario.rejoined) return;
+  scenario.beat3 = true;
+  pause(3, 'คุณขึ้น P4 ไปแล้ว ส่วนบน P3: <b>รถ 4 คันที่วนอยู่ก่อนเอาช่องที่เหลือไปหมด</b> ตรงกับที่ป้ายบอกไว้ตั้งแต่แรก', showFinal, 'ดูผลเทียบ ▶');
+}
+function showFinal() {
+  const r = scenario.results[1], o = scenario.results[0] || r;
+  pause(4,
+    `ระบบเดิมพาคุณวนเพิ่ม <b>${Math.round(o.d - r.d)} ม. · ${Math.round(o.t - r.t)} วินาที</b> ก่อนจะต้องขึ้น P4 อยู่ดี No Cap ส่งคุณขึ้นไปเลย <em>ไม่ต้องเลี้ยวเข้าแล้ววนออก</em>`,
+    () => startRound(1), 'เล่นอีกครั้ง ↻',
+    `<div class="cell bad"><div class="l">ระบบเดิม · เลี้ยวเข้าแล้ววนออก</div><div class="v">${fmt(o)}</div></div>`
+    + `<div class="cell good"><div class="l">No Cap · ขึ้น P4 ทันที</div><div class="v">${fmt(r)}</div></div>`
+    + '<div class="save" style="font-size:13px;color:var(--mute);font-weight:600">วัดจากป้ายถึงทางขึ้น P4 · ชั้นในแบบจำลองมี 32 ช่อง ชั้นจริงใหญ่กว่านี้มาก</div>');
+  $('stK').textContent = 'ผลลัพธ์ · เหตุการณ์เดียวกัน · ขั้นที่ 4 / 4';
+}
+function endScenario() {
+  scenario = null; backToWide();
+  $('story').hidden = true; $('bRush').setAttribute('aria-pressed', 'false'); $('bRush').textContent = 'จำลองช่วงรถแน่น';
+  ['bIn', 'bOut', 'bAuto', 'bMode'].forEach(id => { $(id).hidden = false; });
+  clearGarage(); seedRandom();
+  Object.assign(state, { inCount: 26, outCount: 0, p4: 18, shown: 'GO', pending: null }); lastSignKey = '';
+  setFault(false); setMode('new');
+  auto = true; $('bAuto').setAttribute('aria-pressed', 'true');
+}
+$('bRush').addEventListener('click', e => {
+  if (scenario) { endScenario(); return; }
+  e.currentTarget.setAttribute('aria-pressed', 'true'); e.currentTarget.textContent = 'หยุดจำลอง';
+  startRound(1);
+});
+$('stNext').addEventListener('click', advance);
+addEventListener('keydown', e => {  // presentation clickers send -> or PageDown
+  if (scenario && scenario.paused && (e.key === 'ArrowRight' || e.key === 'PageDown')) { e.preventDefault(); advance(); }
+});
+$('stClose').addEventListener('click', endScenario);
 
 /* ---------- loop ---------- */
 const clock = new THREE.Clock();
@@ -555,20 +1056,33 @@ function frame() {
   const dt = Math.min(0.05, clock.getDelta());
   if (queued > 0 && (queueT += dt) > 0.4) { queueT = 0; queued--; spawnArrival(); }
   tickAuto(dt);
-  for (const c of cars.slice()) stepCar(c, dt);
+  if (scenario && !scenario.paused && !scenario.drvCut) {
+    const you = cars.find(c => c.you && c.mode === 'approach');
+    if (you && you.i >= DRV_CUT_I) { scenario.drvCut = true; setView('driver', true); }
+  }
+  const paused = scenario && scenario.paused;  // paused = waiting for the presenter's click
+  for (const c of cars.slice()) if (!paused || c.replay) stepCar(c, dt);
+  tickReplay(dt);
+  for (const c of cars) if (c.label) {
+    c.label.position.set(c.g.position.x, c.g.position.y + 2.6, c.g.position.z);
+    c.label.visible = c.g.visible && !(c.you && view === 'driver');  // in the driver's seat, "คุณ" would float over the windscreen
+  }
   for (const f of fx.slice()) {
-    f.t += dt; f.helper.update(); f.tag.position.y += dt * 1.2; f.tag.material.opacity = Math.max(0, 1 - f.t / 1.1);
+    f.t += dt; f.helper.update(); f.helper.visible = f.tag.visible = !isCctv(view); f.tag.position.y += dt * 1.2; f.tag.material.opacity = Math.max(0, 1 - f.t / 1.1);
     if (f.t > 1.1) { scene.remove(f.helper, f.tag); fx.splice(fx.indexOf(f), 1); }
   }
-  for (const c of Object.values(cams)) { c.flash = Math.max(0, c.flash - dt * 1.6); c.cone.material.opacity = 0.07 + 0.3 * c.flash; }
+  if (bayPulse) { const s = 1.5 + 0.6 * Math.sin(performance.now() / 160); for (const b of bays) b.dot.scale.setScalar(b.occupied ? s : 1); }
+  for (const s of countFx) s.visible = !isCctv(view);
+  for (const c of Object.values(cams)) { c.flash = camGlow ? 0.6 + 0.4 * Math.sin(performance.now() / 160) : Math.max(0, c.flash - dt * 1.6); c.cone.material.opacity = 0.07 + 0.3 * c.flash; }
   updateSignAndHud(dt);
   if (camTween) {
     camTween.t = Math.min(1, camTween.t + dt / 1.2); const e = 1 - Math.pow(1 - camTween.t, 3);
     camera.position.lerpVectors(camTween.fromP, camTween.toP, e); controls.target.lerpVectors(camTween.fromT, camTween.toT, e);
     if (camTween.t >= 1) camTween = null;
   }
-  if (view === 'driver' && !camTween) camera.lookAt(controls.target); else controls.update();
+  if (view !== 'wide' && !camTween) camera.lookAt(controls.target); else controls.update();
   renderer.render(scene, camera);
+  if (isCctv(view)) drawCctv();
   requestAnimationFrame(frame);
 }
 drawSign('GO', '–', '–');
